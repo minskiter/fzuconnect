@@ -1,3 +1,4 @@
 .vscode/**
+release/**
 config.ini
 *.exe
