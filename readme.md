@@ -1,5 +1,10 @@
 ### FZU 福州大学校园网自动连接服务
 
+#### 兼容性
+- linux arm
+- linux x64
+- windows x64
+
 #### 配置文件 config.ini
 ``` ini
 [common]
@@ -27,19 +32,24 @@ description = 福州大学校园网自动登陆服务
 ./fzuconnect start
 ```
 
-### 停止服务
+#### 停止服务
 ``` sh
 ./fzuconnect stop
 ```
 
-### 重启服务
+#### 重启服务
 ``` sh
 ./fzuconnect restart
 ```
 
-### 日志查看
+#### 日志查看
 window 打开事件查看器
 ```
 win+r eventvwr
 ```
 使用来源FzuConnect过滤日志即可查看完整日志
+
+linux
+``` sh
+sudo systemctl status FzuConnect
+```

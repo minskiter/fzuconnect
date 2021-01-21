@@ -1,0 +1,65 @@
+name: 🏫🏫🏫FzuConnect
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  release:
+    name: Release🚀🚀🚀
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.12
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.12
+        id: go
+
+      - name: Load Code 🚒
+        uses: actions/checkout@v1
+
+      - name: Build🚀🚀🚀
+        run: chmod +x build/build.sh && build/build.sh
+
+      - name: Create Release🚀🚀🚀
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: 🏫🏫🏫FzuConnect Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload AMD64 Linux
+        id: upload-amd64-linux
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./release/fzuconnect_linux_amd64
+          asset_name: fzuconnect_linux_amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload AMD64 Win
+        id: upload-amd64-Win
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./release/fzuconnect_win_amd64.exe
+          asset_name: fzuconnect_win_amd64.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload ARM linux
+        id: upload-arm-linux
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./release/fzuconnect_linux_arm
+          asset_name: fzuconnect_linux_arm
+          asset_content_type: application/octet-stream
