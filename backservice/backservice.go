@@ -44,10 +44,10 @@ func (p *Program) Start(s service.Service) error {
 // run 程序运行
 func (p *Program) run(session *fzuconnect.LoginSession) {
 	res := session.Connect()
-	p.Logger.Info(res.Message)
+	p.Logger.Info(res)
 	for range time.Tick(time.Minute * 5) { // 每隔5分钟登陆校园网
 		res := session.Connect()
-		p.Logger.Info(res.Message)
+		p.Logger.Info(res)
 	}
 }
 
