@@ -4,6 +4,8 @@ package fzuconnect
 import (
 	"encoding/json"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"gopkg.in/ini.v1"
@@ -57,18 +59,24 @@ func (session *LoginSession) Connect() LoginResponse {
 	client := &http.Client{
 		Timeout: 2 * time.Second,
 	}
-	req, _ := http.NewRequest("POST", "http://210.34.48.49/eportal/InterFace.do", nil)
+
+	// 设置x-www-form-urlencoded
+	values := url.Values{}
+	values.Set("userId", session.Username)
+	values.Set("password", session.Password)
+	values.Set("queryString", "wlanuserip=4168a23cb81c0c54de7c6943fcdf479c&wlanacname=3d1cd94ffbf7e4197e8fbd46a5584e53&ssid=&nasip=39ac2c6e007df760ae8b3f7f3b919dfe&snmpagentip=&mac=4e322ca419aeaaa5523942da438b26de&t=wireless-v2&url=709db9dc9ce334aa6363270493a5e6a6b1748319c9795b5e&apmac=&nasid=3d1cd94ffbf7e4197e8fbd46a5584e53&vid=1b33d3067b548968&port=2b0765f54b94f6f7&nasportid=5b9da5b08a53a54010ce97b909267f4e49b8dcf9acf28fa02ad8591e2fe4335e")
+	values.Set("operatorPwd", "")
+	values.Set("operatorUserId", "")
+	values.Set("validcode", "")
+	values.Set("passwordEncrypt", "false")
+	data := strings.NewReader(values.Encode())
+	req, _ := http.NewRequest("POST", "http://210.34.48.49/eportal/InterFace.do", data)
 	// 设置传输的数据
 	query := req.URL.Query()
 	query.Add("method", "login")
-	query.Add("userId", session.Username)
-	query.Add("password", session.Password)
-	query.Add("queryString", "wlanuserip=4168a23cb81c0c54de7c6943fcdf479c&wlanacname=3d1cd94ffbf7e4197e8fbd46a5584e53&ssid=&nasip=39ac2c6e007df760ae8b3f7f3b919dfe&snmpagentip=&mac=4e322ca419aeaaa5523942da438b26de&t=wireless-v2&url=709db9dc9ce334aa6363270493a5e6a6b1748319c9795b5e&apmac=&nasid=3d1cd94ffbf7e4197e8fbd46a5584e53&vid=1b33d3067b548968&port=2b0765f54b94f6f7&nasportid=5b9da5b08a53a54010ce97b909267f4e49b8dcf9acf28fa02ad8591e2fe4335e")
-	query.Add("operatorPwd", "")
-	query.Add("operatorUserId", "")
-	query.Add("validcode", "")
 	req.URL.RawQuery = query.Encode()
 	// 设置header
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36")
 	req.Header.Set("Referer", "http://210.34.48.49/eportal/index.jsp?wlanuserip=4168a23cb81c0c54de7c6943fcdf479c&wlanacname=3d1cd94ffbf7e4197e8fbd46a5584e53&ssid=&nasip=39ac2c6e007df760ae8b3f7f3b919dfe&snmpagentip=&mac=4e322ca419aeaaa5523942da438b26de&t=wireless-v2&url=709db9dc9ce334aa6363270493a5e6a6b1748319c9795b5e&apmac=&nasid=3d1cd94ffbf7e4197e8fbd46a5584e53&vid=1b33d3067b548968&port=2b0765f54b94f6f7&nasportid=5b9da5b08a53a54010ce97b909267f4e49b8dcf9acf28fa02ad8591e2fe4335e")
 	res, err := client.Do(req)

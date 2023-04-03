@@ -1,11 +1,15 @@
 ### FZU 福州大学校园网自动连接服务
 
+更新时间： 2023-4-3 
+后续可能由于接口修改导致不可用，请注意时间
+
 #### 兼容性
 - linux arm
 - linux x64
 - windows x64
 
 #### 配置文件 config.ini
+复制config.sample.ini并重新命名config.ini
 ``` ini
 [common]
 username=
@@ -53,3 +57,5 @@ linux
 ``` sh
 sudo systemctl status FzuConnect
 ```
+
+#### Dev
