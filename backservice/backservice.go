@@ -34,7 +34,7 @@ func (p *Program) LoadIni(filename string) error {
 
 // Start 程序开始
 func (p *Program) Start(s service.Service) error {
-	p.Logger.Info(fmt.Sprintf("%v 服务开始", p.DisplayName))
+	p.Logger.Info(fmt.Sprintf("%v start", p.DisplayName))
 	p.Session = new(fzuconnect.LoginSession)
 	p.Session.LoadIni(p.ConfigFileName)
 	go p.run(p.Session)
