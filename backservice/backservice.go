@@ -49,14 +49,23 @@ func (p *Program) RunOnce(session *fzuconnect.LoginSession) {
 	}
 	if res.UserId != session.Username {
 		// 强制下线当前用户
-		p.Logger.Info(fmt.Sprintf("强制下线当前用户 %s", res.UserId))
-		// 登陆目标用户
-		p.Logger.Info(fmt.Sprintf("登陆用户 %s", session.Username))
-		res, err := session.Connect()
-		if err != nil {
-			p.Logger.Error(err)
+		if res.UserId != "" {
+			p.Logger.Info(fmt.Sprintf("强制下线当前用户 %s", res.UserId))
+			res, err := session.Logout()
+			if err != nil {
+				p.Logger.Error(err)
+			}
+			p.Logger.Info(fmt.Sprintf("强制下线结果: %s", res.Result))
 		}
-		p.Logger.Info(fmt.Sprintf("登陆结果: %s", res.Result))
+		// 登陆目标用户
+		{
+			p.Logger.Info(fmt.Sprintf("登陆用户 %s", session.Username))
+			res, err := session.Connect()
+			if err != nil {
+				p.Logger.Error(err)
+			}
+			p.Logger.Info(fmt.Sprintf("登陆结果: %s", res.Result))
+		}
 	} else {
 		p.Logger.Info(fmt.Sprintf("当前用户 %s 已登陆", res.UserId))
 	}
