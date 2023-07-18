@@ -18,7 +18,7 @@ type Config struct {
 var path, _ = filepath.Abs(filepath.Dir(os.Args[0]))
 
 var config *Config = &Config{
-	config: flag.String("c", "config.ini", "配置文件路径. default: config.ini"), // 服务必须是绝对路径
+	config: flag.String("c", "config.ini", "config path. default: config.ini"), // 服务必须是绝对路径
 }
 
 func main() {

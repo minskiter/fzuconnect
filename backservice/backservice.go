@@ -37,17 +37,36 @@ func (p *Program) Start(s service.Service) error {
 	p.Logger.Info(fmt.Sprintf("%v start", p.DisplayName))
 	p.Session = new(fzuconnect.LoginSession)
 	p.Session.LoadIni(p.ConfigFileName)
-	go p.run(p.Session)
+	go p.Run(p.Session)
 	return nil
 }
 
+func (p *Program) RunOnce(session *fzuconnect.LoginSession) {
+	// 检查当前用户是否登陆
+	res, err := session.GetInfo()
+	if err != nil {
+		p.Logger.Error(err)
+	}
+	if res.UserId != session.Username {
+		// 强制下线当前用户
+		p.Logger.Info(fmt.Sprintf("强制下线当前用户 %s", res.UserId))
+		// 登陆目标用户
+		p.Logger.Info(fmt.Sprintf("登陆用户 %s", session.Username))
+		res, err := session.Connect()
+		if err != nil {
+			p.Logger.Error(err)
+		}
+		p.Logger.Info(fmt.Sprintf("登陆结果: %s", res.Result))
+	} else {
+		p.Logger.Info(fmt.Sprintf("当前用户 %s 已登陆", res.UserId))
+	}
+}
+
 // run 程序运行
-func (p *Program) run(session *fzuconnect.LoginSession) {
-	res := session.Connect()
-	p.Logger.Info(res)
+func (p *Program) Run(session *fzuconnect.LoginSession) {
+	p.RunOnce(session)
 	for range time.Tick(time.Minute * 5) { // 每隔5分钟登陆校园网
-		res := session.Connect()
-		p.Logger.Info(res)
+		p.RunOnce(session)
 	}
 }
 
