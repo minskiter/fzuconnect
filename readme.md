@@ -50,11 +50,11 @@ window 打开事件查看器
 ```
 win+r eventvwr
 ```
-使用来源FzuConnect过滤日志即可查看完整日志
+使用来源FZUConnect过滤日志即可查看完整日志
 
 linux
 ``` sh
-sudo systemctl status FzuConnect
+sudo systemctl status FZUConnect
 ```
 
 #### Dev
