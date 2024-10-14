@@ -73,6 +73,9 @@ func (session *LoginSession) ReloadIni() error {
 func (session *LoginSession) Connect() (LoginResponse, error) {
 	client := &http.Client{
 		Timeout: 2 * time.Second,
+		Transport: &http.Transport{
+			Proxy: nil,
+		},
 	}
 
 	// 设置x-www-form-urlencoded
@@ -108,6 +111,9 @@ func (session *LoginSession) Connect() (LoginResponse, error) {
 func (session *LoginSession) GetInfo() (UserInfoResponse, error) {
 	client := &http.Client{
 		Timeout: 2 * time.Second,
+		Transport: &http.Transport{
+			Proxy: nil,
+		},
 	}
 	req, _ := http.NewRequest("POST", "http://59.77.227.53/eportal/InterFace.do", nil)
 	// 设置传输的数据
@@ -131,6 +137,9 @@ func (session *LoginSession) GetInfo() (UserInfoResponse, error) {
 func (session *LoginSession) Logout() (LogoutResponse, error) {
 	client := &http.Client{
 		Timeout: 2 * time.Second,
+		Transport: &http.Transport{
+			Proxy: nil,
+		},
 	}
 	req, _ := http.NewRequest("POST", "http://59.77.227.53/eportal/InterFace.do", nil)
 	// 设置传输的数据

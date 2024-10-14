@@ -69,6 +69,9 @@ func main() {
 		case "start":
 			err = s.Start()
 			return
+		case "status":
+			err = program.NetStatus()
+			return
 		}
 	}
 	err = s.Run()

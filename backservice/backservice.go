@@ -41,6 +41,19 @@ func (p *Program) Start(s service.Service) error {
 	return nil
 }
 
+func (p *Program) NetStatus() error {
+	res, err := p.Session.GetInfo()
+	if err != nil {
+		p.Logger.Error(err)
+	}
+	if res.UserId != "" {
+		p.Logger.Info(fmt.Sprintf("当前用户 %s 已登陆", res.UserId))
+	} else {
+		p.Logger.Info((fmt.Sprintf("当前校园网未登陆")))
+	}
+	return nil
+}
+
 func (p *Program) RunOnce(session *fzuconnect.LoginSession) {
 	// 检查当前用户是否登陆
 	res, err := session.GetInfo()
